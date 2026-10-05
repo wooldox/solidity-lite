@@ -1,34 +1,63 @@
-# Solidity Lite
+<p align="center">
+  <img src="images/icon.png" alt="Solidity Lite" width="128" height="128">
+</p>
 
-Lightweight Solidity support for VS Code and Cursor. No language server, no background process: files are parsed on demand, only when you hover, jump, look for references or open the Outline.
+<h1 align="center">Solidity Lite</h1>
 
-- **Syntax highlighting**: keywords, types, NatSpec tags, constants, variables and properties, plus ```` ```solidity ```` blocks in Markdown.
-- **Hover**: the declaration's signature (a struct's fields, an enum's members) and its NatSpec. Parameters show their `@param` line; overrides without NatSpec, and `@inheritdoc`, show the base's.
-- **Go to Definition** (Cmd/Ctrl+click, F12): locals, parameters, contract members including inherited ones, `super.` and `this.`, struct fields through variables, mappings and arrays, functions attached with `using … for` (including `global`), enum members, events, errors, and imported symbols. Import paths open the file, following `foundry.toml`/`remappings.txt` remappings and `lib/` the way forge does, then `node_modules`.
-- **Built-ins** hover with docs and jump to `builtins/globals.sol`, a declaration file in the spirit of TypeScript's `lib.d.ts`: globals (`keccak256`, `abi.encode`, `msg.sender`, `block.timestamp`, …), members (`addr.balance`, `arr.push`, `type(T).max`, `f.selector`, `Err.selector`, `Price.wrap`, `bytes32.length`), units (`ether`, `days`), `this`/`super`, and inside `assembly { }` the Yul built-ins (`mload`, `sstore`, `call`, …), `let` variables, Yul functions and `.slot`/`.offset`.
-- **Find All References** (Shift+F12, or Cmd/Ctrl+click on a declaration's own name) across the workspace's `.sol` files, skipping `lib/`, `node_modules/` and build output. Only files containing the name as text are parsed.
-- **Highlights** every use of the symbol under the cursor in the current file.
-- **Outline**, breadcrumbs and Go to Symbol (Cmd/Ctrl+Shift+O), with parameter types to tell overloads apart.
-- **Go to Symbol in Workspace** (Cmd/Ctrl+T) across the project's `.sol` files. The first search parses them all (about 2 s for 50 files); later ones are instant.
-- **Selectors**: hovering an external/public function, public variable or error shows its 4-byte selector and canonical signature; an event shows its topic0.
-- **Autocomplete**: members after `.` (struct fields, contract functions, `using … for` functions, built-in members) and every name in scope, with signatures and docs.
-- **Parameter hints** while typing a call: every overload, the current parameter highlighted, its `@param` text.
-- **Rename** (F2) across the project, including overrides in base and derived contracts and `@param` lines. Refuses built-ins and names declared in dependencies.
-- **Call hierarchy** (who calls this function, what it calls) and **type hierarchy** (bases and derived contracts).
-- **`///` template**: typing `///` above a declaration offers a NatSpec skeleton with its `@param` and `@return` lines.
-- **Syntax errors** underlined as you type, from the parser alone (no compiler: typos and brackets, not types). Off with `solidityLite.syntaxErrors`.
-- **Format Document**: runs `forge fmt` on the buffer from the nearest folder with a `foundry.toml`, so your `[fmt]` settings apply. Errors show briefly in the status bar, with details in the *Solidity Lite* output channel.
+<p align="center">
+  <b>Solidity in VS Code and Cursor, without the weight.</b><br>
+  Hover, go to definition, references, rename and autocomplete, with no language server running in the background.
+</p>
 
-Names are resolved from scopes and declarations, without a compiler. Overloads are told apart by argument count and simple argument types; when that is not enough, every candidate is offered. Expressions it cannot type (say, the result of a ternary) do not resolve.
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=wooldox.solidity-lite"><img alt="VS Marketplace" src="https://img.shields.io/badge/VS%20Marketplace-install-4f46e5"></a>
+  <a href="https://open-vsx.org/extension/wooldox/solidity-lite"><img alt="Open VSX" src="https://img.shields.io/open-vsx/v/wooldox/solidity-lite?label=Open%20VSX&color=14b8a6"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-64748b"></a>
+</p>
+
+---
+
+## Why
+
+Most Solidity extensions start a language server that indexes your whole workspace, dependencies included, and recompiles as you type. On a big Foundry project that means a busy CPU and a warm laptop.
+
+Solidity Lite does nothing until you ask. Highlighting is a grammar the editor applies itself. Everything else parses only the file you are in, and what it imports, when you hover, click or type. It starts in about 20 ms and has no process of its own.
+
+## Features
+
+### Reading code
+
+- **Hover** shows the declaration and its NatSpec: a function's signature, a struct's fields, a parameter's `@param` line. Overrides without docs borrow their base's, and `@inheritdoc` is followed.
+- **Selectors on hover**: external functions, public variables and errors show their 4-byte selector (`transfer(address,uint256)` → `0xa9059cbb`); events show their topic0.
+- **Go to Definition** (Cmd/Ctrl+click) through locals, inherited members, `super.` and `this.`, struct fields behind mappings and arrays, `using … for` functions (including `global`), and imports. Import paths open the file, following `foundry.toml` and `remappings.txt` the way forge does.
+- **Find All References** and **highlights** of every use of the symbol under the cursor.
+- **Outline**, breadcrumbs, **Go to Symbol in Workspace** (Cmd/Ctrl+T), **call hierarchy** and **type hierarchy**.
+
+### Writing code
+
+- **Autocomplete** for members after `.` and every name in scope, with signatures and docs.
+- **Parameter hints** while typing a call, across overloads.
+- **Rename** (F2) across the project, overrides in base and derived contracts and `@param` lines included.
+- **`///` template**: type `///` above a declaration to get its `@param` and `@return` lines.
+- **Syntax errors** underlined as you type, from the parser alone.
+- **Format Document** with `forge fmt`, using your project's `[fmt]` settings.
+
+### Built-ins
+
+`keccak256`, `abi.encode`, `msg.sender`, `block.timestamp`, `addr.balance`, `type(T).max`, `Err.selector`, `Price.wrap`, units like `ether` and `days`, and inside `assembly { }` every Yul built-in, all with docs on hover. Cmd/Ctrl+click opens [`builtins/globals.sol`](builtins/globals.sol), a declaration file in the spirit of TypeScript's `lib.d.ts`.
+
+## Requirements
+
+None for most features. Format Document needs [Foundry](https://getfoundry.sh) (`forge`).
 
 ## Settings
 
-| Setting | Default | |
+| Setting | Default | Description |
 |---|---|---|
-| `solidityLite.forgePath` | `forge` | Falls back to `~/.foundry/bin/forge` when `forge` is not on the PATH. |
+| `solidityLite.forgePath` | `forge` | The `forge` binary for Format Document. Falls back to `~/.foundry/bin/forge` when `forge` is not on the PATH. |
 | `solidityLite.syntaxErrors` | `true` | Underline syntax errors while typing. |
 
-To format on save:
+To format on save, add this to your settings:
 
 ```json
 "[solidity]": {
@@ -37,20 +66,23 @@ To format on save:
 }
 ```
 
-## Develop
+## How it works, and its limits
 
-```bash
-npm install
-npm run build      # or: npm run watch
-npm test           # core tests, against test/fixtures/project
-npm run e2e        # runs the providers inside a throwaway Cursor profile
-npm run package    # type-checks, builds and packs solidity-lite-<version>.vsix
-```
+Names are resolved from scopes and declarations, the way you would read the code, not by a compiler. That keeps it fast and light, with two consequences:
 
-Press F5 to open an Extension Development Host. `test/sample.sol` covers most of the grammar.
+- Overloads are told apart by argument count and simple argument types. When that is not enough, every candidate is offered.
+- Expressions it cannot type, such as the result of a ternary, do not resolve.
 
-`src/core/` knows nothing about the editor (parsing, scopes, hover text, rename edits); `src/navigation.ts`, `src/editing.ts`, `src/syntaxErrors.ts` and `src/format.ts` connect it to VS Code through `src/session.ts`. `scripts/build.mjs` bundles with esbuild and patches the parser so syntax errors in half-typed code keep their positions.
+Syntax errors come from the parser, so they catch typos and unbalanced brackets, not type errors. Run `forge build` for those.
+
+## Contributing
+
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) to build and test it locally.
 
 ## Credits
 
-The grammar and language configuration come from Nomic Foundation's [hardhat-vscode](https://github.com/NomicFoundation/hardhat-vscode) (MIT), with small additions for constants, identifiers and newer keywords. See `LICENSE`.
+The grammar and language configuration come from Nomic Foundation's [hardhat-vscode](https://github.com/NomicFoundation/hardhat-vscode) (MIT), with additions for constants, identifiers and newer keywords.
+
+## License
+
+[MIT](LICENSE)
