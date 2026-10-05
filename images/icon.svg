@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b1f2e"/><stop offset="1" stop-color="#11131c"/></linearGradient></defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <g fill="none" stroke="#cbd5e1" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M38 28 C29 28 28 33 28 42 L28 54 C28 60 25 64 19 64 C25 64 28 68 28 74 L28 86 C28 95 29 100 38 100"/>
+    <path d="M90 28 C99 28 100 33 100 42 L100 54 C100 60 103 64 109 64 C103 64 100 68 100 74 L100 86 C100 95 99 100 90 100"/>
+  </g>
+  <g transform="translate(43.68 32.00) scale(0.05182)">
+    <polygon points="392.07,0.00 0.00,650.54 392.07,882.29 392.07,472.33" fill="#c7d2fe"/>
+    <polygon points="392.07,0.00 784.13,650.54 392.07,882.29 392.07,472.33" fill="#818cf8"/>
+    <polygon points="0.00,650.54 392.07,882.29 392.07,472.33" fill="#8b93f5"/>
+    <polygon points="784.13,650.54 392.07,882.29 392.07,472.33" fill="#5b63d8"/>
+    <polygon points="0.00,682.47 392.07,914.10 392.07,1234.96" fill="#99f6e4"/>
+    <polygon points="784.37,682.47 392.07,914.10 392.07,1234.96" fill="#2dd4bf"/>
+  </g>
+</svg>

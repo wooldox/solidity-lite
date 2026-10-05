@@ -1,0 +1,112 @@
+{
+  "name": "solidity-lite",
+  "displayName": "Solidity Lite",
+  "description": "Lightweight Solidity support: highlighting, hover, go to definition, references, rename, autocomplete, outline and forge fmt, with no background language server.",
+  "version": "0.4.0",
+  "publisher": "wooldox",
+  "author": "wooldox",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooldox/solidity-lite"
+  },
+  "bugs": {
+    "url": "https://github.com/wooldox/solidity-lite/issues"
+  },
+  "homepage": "https://github.com/wooldox/solidity-lite#readme",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#11131c",
+    "theme": "dark"
+  },
+  "private": true,
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Formatters"
+  ],
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "foundry",
+    "forge",
+    "smart contracts",
+    "evm",
+    "natspec",
+    "yul"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:solidity",
+    "workspaceContains:**/*.sol"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "solidity",
+        "aliases": [
+          "Solidity",
+          "solidity"
+        ],
+        "extensions": [
+          ".sol"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "solidity",
+        "scopeName": "source.solidity",
+        "path": "./syntaxes/solidity.json"
+      },
+      {
+        "scopeName": "markdown.solidity.codeblock",
+        "path": "./syntaxes/solidity-markdown-injection.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.solidity": "solidity"
+        }
+      }
+    ],
+    "configuration": {
+      "title": "Solidity Lite",
+      "properties": {
+        "solidityLite.forgePath": {
+          "type": "string",
+          "default": "forge",
+          "markdownDescription": "Path to the `forge` binary used by Format Document. Falls back to `~/.foundry/bin/forge` when `forge` is not on the PATH."
+        },
+        "solidityLite.syntaxErrors": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Underline syntax errors while typing. Uses the parser only (no compiler), so it catches typos and unbalanced brackets, not type errors."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run typecheck && node scripts/build.mjs --minify",
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "node scripts/build.mjs --test && node --test out-test/*.test.js",
+    "e2e": "./scripts/e2e.sh",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@solidity-parser/parser": "^0.20.2",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "~1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.6.0"
+  },
+  "dependencies": {
+    "@noble/hashes": "^2.4.0"
+  }
+}

@@ -1,0 +1,10 @@
+src/
+**/*.map
+tsconfig.json
+.gitignore
+node_modules/
+test/
+.vscode/
+out-test/
+scripts/
+images/icon.svg
